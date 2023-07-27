@@ -1,31 +1,34 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	"github.com/wqh66886/vue-gin-admin/server/server/model"
 )
 
-type Handler struct{}
+type Handler struct {
+	UserService model.UserService
+}
 
 type Config struct {
-	R *gin.Engine
+	R           *gin.Engine
+	UserService model.UserService
 }
 
-func init() {
-	if err := godotenv.Load("D:\\vue-gin-admin\\local.env"); err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
+// func init() {
+// 	if err := godotenv.Load("/Users/wangqihao/vue-gin-admin/local.env"); err != nil {
+// 		log.Fatal("Error loading .env file")
+// 	}
+// }
 
 func NewHandler(c *Config) {
 
-	h := &Handler{}
-
-	g := c.R.Group(os.Getenv("VUE_GIN_ADMIN"))
+	h := &Handler{
+		UserService: c.UserService,
+	}
+	g := c.R.Group(os.Getenv("/api/account"))
 
 	g.GET("/me", h.Me)
 	g.POST("/signup", h.SignUp)
@@ -35,12 +38,6 @@ func NewHandler(c *Config) {
 	g.POST("/image", h.Image)
 	g.DELETE("/image", h.DeleteImage)
 	g.PUT("/details", h.Details)
-}
-
-func (h *Handler) Me(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "it's me",
-	})
 }
 
 func (h *Handler) SignUp(ctx *gin.Context) {
