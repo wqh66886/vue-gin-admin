@@ -26,3 +26,8 @@ func (s *UserService) Get(ctx context.Context, uid uuid.UUID) (*model.User, erro
 	u, err := s.UserRepository.FindByID(ctx, uid)
 	return u, err
 }
+
+// SignUp implements model.UserService.
+func (*UserService) SignUp(ctx context.Context, u *model.User) error {
+	panic("unimplemented")
+}

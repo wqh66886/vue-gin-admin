@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/wqh66886/vue-gin-admin/server/server/model"
@@ -28,7 +27,7 @@ func NewHandler(c *Config) {
 	h := &Handler{
 		UserService: c.UserService,
 	}
-	g := c.R.Group(os.Getenv("/api/account"))
+	g := c.R.Group("/api/account")
 
 	g.GET("/me", h.Me)
 	g.POST("/signup", h.SignUp)
@@ -38,12 +37,6 @@ func NewHandler(c *Config) {
 	g.POST("/image", h.Image)
 	g.DELETE("/image", h.DeleteImage)
 	g.PUT("/details", h.Details)
-}
-
-func (h *Handler) SignUp(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"message": "it's sign up",
-	})
 }
 
 func (h *Handler) SignIn(ctx *gin.Context) {
