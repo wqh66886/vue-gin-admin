@@ -2,6 +2,7 @@ package handler
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/wqh66886/vue-gin-admin/server/server/model"
@@ -37,4 +38,16 @@ func (h *Handler) SignUp(ctx *gin.Context) {
 		})
 		return
 	}
+
+	tokens, err := h.TokenService.NewPairFromUser(ctx, u, "")
+	if err != nil {
+		log.Printf("Failed to create tokens for user:%v\n", err.Error())
+		ctx.JSON(apperrors.Status(err), gin.H{
+			"error": err,
+		})
+		return
+	}
+	ctx.JSON(http.StatusCreated, gin.H{
+		"tokens": tokens,
+	})
 }
